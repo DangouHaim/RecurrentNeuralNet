@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +12,16 @@ namespace RecurrentNN
         {
             double[][] pat = new double[][]
             {
-                new double[] { 1 , 1 },
-                new double[] { 0 , 0 },
-                new double[] { 1 , 0 },
-                new double[] { 0 , 1 }
+                new double[] { 1 },
+                new double[] { 2 },
+                new double[] { 3 }
             };
 
-            double[] a = new double[] { 0, 0, 1, 1 };
+            double[] a = new double[] { 1, 2, 3 };
 
-            Neuron n = new Neuron(2, 2, new double[] { 0, 1 }, 0.01);
-            Neuron c = new Neuron(2, 2, new double[] { 0, 1 }, 0.01);
-            Neuron o = new Neuron(2, 1, new double[] { 0, 1 }, 0.01);
+            Neuron n = new Neuron(1, 1, new double[] { 0, 1, 2, 3, 4, 5 }, 0.9, 0.01);
+            Neuron c = new Neuron(1, 1, new double[] { 0, 1, 2, 3, 4, 5 }, 0.9, 0.01);
+            Neuron o = new Neuron(1, 1, new double[] { 0, 1, 2, 3, 4, 5 }, 0.9, 0.01);
 
             double ge = 0;
             do
@@ -72,7 +71,10 @@ namespace RecurrentNN
             while (ge > 0);
 
             Console.WriteLine();
-
+            pat = new double[][]
+            {
+                new double[] { 4 }
+            };
             for (int p = 0; p < pat.Length; p++)
             {
                 n.SetIn(pat[p]);
