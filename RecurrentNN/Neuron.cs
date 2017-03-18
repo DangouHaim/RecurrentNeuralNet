@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +12,16 @@ namespace RecurrentNN
         public double[] _out;
         public double[,] _wio;
         public double[] _lim;
-        public double _speed;
+        double _speed;
+        double _scale;
 
-        public Neuron(int inputs, int outputs, double[] limits, double speed)
+        public Neuron(int inputs, int outputs, double[] limits, double limitScaleFactor, double speed)
         {
             _in = new double[inputs];
             _out = new double[outputs];
             _wio = new double[inputs, outputs];
             _lim = limits;
+            _scale = limitScaleFactor;
             _speed = speed;
             SetW();
         }
@@ -46,12 +48,14 @@ namespace RecurrentNN
                     _out[i] += _in[j] * _wio[j, i];
                 }
                 double o = 0;
+                double le = 0;
                 for(int j = 0; j < _lim.Length; j++)
                 {
-                    if(_out[i] > _lim[j] / 2)
+                    if (_out[i] > (le + (_lim[j] - le) * _scale))
                     {
                         o = _lim[j];
                     }
+                    le = _lim[j];
                 }
                 _out[i] = o;
             }
