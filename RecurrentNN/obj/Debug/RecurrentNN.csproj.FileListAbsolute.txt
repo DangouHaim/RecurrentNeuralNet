@@ -1,0 +1,6 @@
+c:\users\admin\documents\visual studio 2015\Projects\RecurrentNN\RecurrentNN\bin\Debug\RecurrentNN.exe.config
+c:\users\admin\documents\visual studio 2015\Projects\RecurrentNN\RecurrentNN\bin\Debug\RecurrentNN.exe
+c:\users\admin\documents\visual studio 2015\Projects\RecurrentNN\RecurrentNN\bin\Debug\RecurrentNN.pdb
+c:\users\admin\documents\visual studio 2015\Projects\RecurrentNN\RecurrentNN\obj\Debug\RecurrentNN.csprojResolveAssemblyReference.cache
+c:\users\admin\documents\visual studio 2015\Projects\RecurrentNN\RecurrentNN\obj\Debug\RecurrentNN.exe
+c:\users\admin\documents\visual studio 2015\Projects\RecurrentNN\RecurrentNN\obj\Debug\RecurrentNN.pdb
