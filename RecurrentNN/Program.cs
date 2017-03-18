@@ -20,10 +20,33 @@ namespace RecurrentNN
 
             double[] a = new double[] { 1, 3, 5, 7 };
 
-            Neuron n = new Neuron(1, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
-            Neuron c = new Neuron(4, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
-            Neuron c2 = new Neuron(4, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
-            Neuron o = new Neuron(4, 1, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
+            Neuron[] n = new Neuron[9];
+            for(int i = 0; i < n.Length; i++)
+            {
+                n[i] = new Neuron(1, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
+            }
+            Neuron[] c = new Neuron[9];
+            for(int i = 0; i < c.Length; i++)
+            {
+                c[i] = new Neuron(4, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
+            }
+            Neuron[] c2 = new Neuron[9];
+            for(int i = 0; i < c2.Length; i++)
+            {
+                c2[i] = new Neuron(4, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
+            }
+            Neuron[] o = new Neuron[9];
+            for(int i = 0; i < o.Length; i++)
+            {
+                o[i] = new Neuron(4, 1, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
+            }
+
+
+
+
+
+
+
 
             double ge = 0;
             do
@@ -31,47 +54,71 @@ namespace RecurrentNN
                 ge = 0;
                 for(int p = 0; p < pat.Length; p++)
                 {
-                    n.SetIn(pat[p]);
-                    n.Out();
-                    n.SetRecurrentContext(c);
-
-                    c.SetIn(n._out);
-                    c.Out();
-                    c.SetRecurrentContext(c2);
-
-                    c2.SetIn(c._out);
-                    c2.Out();
-
-
-                    o.SetIn(n._out);
-                    o.Out();
-
-                    List<double> e = new List<double>();
-                    for(int i = 0; i < o._out.Length; i++)
+                    for (int current = 0; current < n.Length; current++)
                     {
-                        e.Add(a[p] - o._out[i]);
-                        ge += Math.Abs(e[i]);
+                        n[current].SetIn(pat[p]);
+                        n[current].Out();
+                        n[current].SetRecurrentContext(c[current]);
+
+                        c[current].SetIn(n[current]._out);
+                        c[current].Out();
+                        c[current].SetRecurrentContext(c2[current]);
+
+                        c2[current].SetIn(c[current]._out);
+                        c2[current].Out();
+
+
+                        o[current].SetIn(n[current]._out);
+                        o[current].Out();
                     }
 
-                    List<double[]> e2 = new List<double[]>();
-                    for (int i = 0; i < o._out.Length; i++)
+                    double[] maxOut = maxOut = o[0]._out;
+                    double s = 0;
+                    for (int i = 0; i < o.Length; i++)
                     {
-                        List<double> cur = new List<double>();
-
-                        for (int j = 0; j < o._in.Length; j++)
+                        double cur = 0;
+                        foreach (double d in o[i]._out)
                         {
-                            cur.Add(e[i] * o._wio[j, i]);
+                            cur += d;
                         }
-                        e2.Add(cur.ToArray());
+                        if(cur > s)
+                        {
+                            s = cur;
+                            maxOut = o[i]._out;
+                        }
                     }
 
-                    o.Study(e.ToArray());
+                    for (int current = 0; current < n.Length; current++)
+                    { 
+                        
 
-                    foreach (double[] d in e2)
-                    {
-                        c2.Study(d);
-                        c.Study(d);
-                        n.Study(d);
+                        List<double> e = new List<double>();//////////////////////////////
+                        for (int i = 0; i < o[current]._out.Length; i++)
+                        {
+                            e.Add(a[p] - maxOut[i]);
+                            ge += Math.Abs(e[i]);
+                        }
+
+                        List<double[]> e1 = new List<double[]>();
+                        for (int i = 0; i < o[current]._out.Length; i++)
+                        {
+                            List<double> cur = new List<double>();
+
+                            for (int j = 0; j < o[current]._in.Length; j++)
+                            {
+                                cur.Add(e[i] * o[current]._wio[j, i]);
+                            }
+                            e1.Add(cur.ToArray());
+                        }
+
+                        o[current].Study(e.ToArray());
+
+                        foreach (double[] d in e1)
+                        {
+                            c2[current].Study(d);
+                            c[current].Study(d);
+                            n[current].Study(d);
+                        }
                     }
                 }
 
@@ -88,22 +135,41 @@ namespace RecurrentNN
             };
             for (int p = 0; p < pat.Length; p++)
             {
-                n.SetIn(pat[p]);
-                n.Out();
-                n.SetRecurrentContext(c);
+                for (int current = 0; current < n.Length; current++)
+                {
+                    n[current].SetIn(pat[p]);
+                    n[current].Out();
+                    n[current].SetRecurrentContext(c[current]);
 
-                c.SetIn(n._out);
-                c.Out();
-                c.SetRecurrentContext(c2);
+                    c[current].SetIn(n[current]._out);
+                    c[current].Out();
+                    c[current].SetRecurrentContext(c2[current]);
 
-                c2.SetIn(c._out);
-                c2.Out();
+                    c2[current].SetIn(c[current]._out);
+                    c2[current].Out();
 
 
-                o.SetIn(n._out);
-                o.Out();
+                    o[current].SetIn(n[current]._out);
+                    o[current].Out();
+                }
 
-                foreach (double d in o._out)
+                double[] maxOut = maxOut = o[0]._out;
+                double s = 0;
+                for (int i = 0; i < o.Length; i++)
+                {
+                    double cur = 0;
+                    foreach (double d in o[i]._out)
+                    {
+                        cur += d;
+                    }
+                    if (cur > s)
+                    {
+                        s = cur;
+                        maxOut = o[i]._out;
+                    }
+                }
+
+                foreach (double d in maxOut)
                 {
                     Console.WriteLine(d);
                 }
