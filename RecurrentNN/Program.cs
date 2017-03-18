@@ -15,19 +15,15 @@ namespace RecurrentNN
                 new double[] { 1 },
                 new double[] { 2 },
                 new double[] { 3 },
-                new double[] { 4 },
-                new double[] { 1 },
-                new double[] { 2 },
-                new double[] { 3 },
                 new double[] { 4 }
             };
 
-            double[] a = new double[] { 1, 2, 3, 4, 1, 2, 3, 4 };
+            double[] a = new double[] { 1, 3, 5, 7 };
 
-            Neuron n = new Neuron(1, 4, new double[] { 0, 1, 2, 3, 4, 5, 6 }, 0.6, 0.01);
-            Neuron c = new Neuron(4, 4, new double[] { 0, 1, 2, 3, 4, 5, 6 }, 0.6, 0.01);
-            Neuron c2 = new Neuron(4, 4, new double[] { 0, 1, 2, 3, 4, 5, 6 }, 0.6, 0.01);
-            Neuron o = new Neuron(4, 1, new double[] { 0, 1, 2, 3, 4, 5, 6 }, 0.6, 0.01);
+            Neuron n = new Neuron(1, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
+            Neuron c = new Neuron(4, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
+            Neuron c2 = new Neuron(4, 4, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
+            Neuron o = new Neuron(4, 1, new double[] { 0, 1, 3, 5, 7, 9, 11 }, 0.6, 0.01);
 
             double ge = 0;
             do
@@ -87,7 +83,8 @@ namespace RecurrentNN
             Console.WriteLine();
             pat = new double[][]
             {
-                new double[] { 5 }
+                new double[] { 5 },
+                new double[] { 6 }
             };
             for (int p = 0; p < pat.Length; p++)
             {
