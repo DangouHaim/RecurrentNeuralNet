@@ -14,14 +14,20 @@ namespace RecurrentNN
             {
                 new double[] { 1 },
                 new double[] { 2 },
-                new double[] { 3 }
+                new double[] { 3 },
+                new double[] { 4 },
+                new double[] { 1 },
+                new double[] { 2 },
+                new double[] { 3 },
+                new double[] { 4 }
             };
 
-            double[] a = new double[] { 1, 2, 3 };
+            double[] a = new double[] { 1, 2, 3, 4, 1, 2, 3, 4 };
 
-            Neuron n = new Neuron(1, 1, new double[] { 0, 1, 2, 3, 4, 5 }, 0.9, 0.01);
-            Neuron c = new Neuron(1, 1, new double[] { 0, 1, 2, 3, 4, 5 }, 0.9, 0.01);
-            Neuron o = new Neuron(1, 1, new double[] { 0, 1, 2, 3, 4, 5 }, 0.9, 0.01);
+            Neuron n = new Neuron(1, 4, new double[] { 0, 1, 2, 3, 4, 5, 6 }, 0.6, 0.01);
+            Neuron c = new Neuron(4, 4, new double[] { 0, 1, 2, 3, 4, 5, 6 }, 0.6, 0.01);
+            Neuron c2 = new Neuron(4, 4, new double[] { 0, 1, 2, 3, 4, 5, 6 }, 0.6, 0.01);
+            Neuron o = new Neuron(4, 1, new double[] { 0, 1, 2, 3, 4, 5, 6 }, 0.6, 0.01);
 
             double ge = 0;
             do
@@ -32,8 +38,15 @@ namespace RecurrentNN
                     n.SetIn(pat[p]);
                     n.Out();
                     n.SetRecurrentContext(c);
+
                     c.SetIn(n._out);
                     c.Out();
+                    c.SetRecurrentContext(c2);
+
+                    c2.SetIn(c._out);
+                    c2.Out();
+
+
                     o.SetIn(n._out);
                     o.Out();
 
@@ -45,7 +58,7 @@ namespace RecurrentNN
                     }
 
                     List<double[]> e2 = new List<double[]>();
-                    for(int i = 0; i < o._out.Length; i++)
+                    for (int i = 0; i < o._out.Length; i++)
                     {
                         List<double> cur = new List<double>();
 
@@ -57,9 +70,10 @@ namespace RecurrentNN
                     }
 
                     o.Study(e.ToArray());
-                    
+
                     foreach (double[] d in e2)
                     {
+                        c2.Study(d);
                         c.Study(d);
                         n.Study(d);
                     }
@@ -73,17 +87,25 @@ namespace RecurrentNN
             Console.WriteLine();
             pat = new double[][]
             {
-                new double[] { 4 }
+                new double[] { 5 }
             };
             for (int p = 0; p < pat.Length; p++)
             {
                 n.SetIn(pat[p]);
                 n.Out();
                 n.SetRecurrentContext(c);
+
                 c.SetIn(n._out);
                 c.Out();
+                c.SetRecurrentContext(c2);
+
+                c2.SetIn(c._out);
+                c2.Out();
+
+
                 o.SetIn(n._out);
                 o.Out();
+
                 foreach (double d in o._out)
                 {
                     Console.WriteLine(d);
